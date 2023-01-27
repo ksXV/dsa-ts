@@ -7,10 +7,6 @@
 //[a,b,c,x] and
 //[z,y,x] should return true
 
-type hashmap<T> = {
-  [key: string]: T;
-};
-
 function checkForMatchingLetters(arr1: string[], arr2: string[]) {
   const hashmap = new Map<string, boolean>();
 
