@@ -46,6 +46,7 @@ class BinarySearchTree<T> {
 				currentNode = currentNode.right;
 			}
 		}
+		return this;
 	}
 	lookup(value: T) {
 		if (this.root == null) {
@@ -68,6 +69,7 @@ class BinarySearchTree<T> {
 				currentNode = currentNode.right;
 			}
 		}
+		return null;
 	}
 	remove(value: T) {
 		if (this.root === null) {
@@ -136,6 +138,78 @@ class BinarySearchTree<T> {
 		}
 		return true;
 	}
+	breadthFirstSearch() {
+		let currentNode = this.root;
+		let list: T[] = [];
+		let queue: (INode<T> | null)[] = [];
+		queue.push(currentNode);
+		while (queue.length) {
+			currentNode = queue[0];
+			for (let i = 1; i < queue.length; ++i) {
+				queue[i - 1] = queue[i];
+			}
+			queue.length--;
+			if (currentNode === null) {
+				return null;
+			}
+			list.push(currentNode.value);
+			if (currentNode.left) {
+				queue.push(currentNode.left);
+			}
+			if (currentNode.right) {
+				queue.push(currentNode.right);
+			}
+		}
+		return list;
+	}
+	DFSInOrder() {
+		return this.traverseInOrder(this.root, []);
+	}
+	DFSPostOrder() {
+		return this.traversePostOrder(this.root, []);
+	}
+	DFSPreOrder() {
+		return this.travesePreOrder(this.root, []);
+	}
+	private traverseInOrder(node: INode<T> | null, list: T[]) {
+		if (!node) {
+			return [];
+		}
+		if (node.left) {
+			this.traverseInOrder(node.left, list);
+		}
+		list.push(node.value);
+		if (node.right) {
+			this.traverseInOrder(node.right, list);
+		}
+		return list;
+	}
+	private traversePostOrder(node: INode<T> | null, list: T[]) {
+		if (!node) {
+			return [];
+		}
+		list.push(node.value);
+		if (node.left) {
+			this.traversePostOrder(node.left, list);
+		}
+		if (node.right) {
+			this.traversePostOrder(node.right, list);
+		}
+		return list;
+	}
+	private travesePreOrder(node: INode<T> | null, list: T[]) {
+		if (!node) {
+			return [];
+		}
+		if (node.left) {
+			this.travesePreOrder(node.left, list);
+		}
+		if (node.right) {
+			this.travesePreOrder(node.right, list);
+		}
+		list.push(node.value);
+		return list;
+	}
 }
 const tree = new BinarySearchTree<number>();
 tree.insert(9);
@@ -145,8 +219,8 @@ tree.insert(20);
 tree.insert(170);
 tree.insert(15);
 tree.insert(1);
-
-console.log(tree.remove(6));
+console.log(tree.breadthFirstSearch());
+// console.log(tree.remove(6));
 
 //     9
 //  4     20
